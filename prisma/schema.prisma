@@ -7,20 +7,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Multimedia {
+model MeditationContent {
   id Int @id @default(autoincrement())
   title String
   description String
-  url String
-  duration Int
   category String
   type String
-}
-
-model Article {
-  id Int @id @default(autoincrement())
-  title String
-  description String
   url String
-  category String
 }
