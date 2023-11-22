@@ -13,7 +13,7 @@ model Multimedia {
   description String
   url String
   duration Int
-  catergory String
+  category String
   type String
 }
 
@@ -22,5 +22,5 @@ model Article {
   title String
   description String
   url String
-  catergory String
+  category String
 }
