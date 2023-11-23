@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client"
 
 export async function GET(request: any) {
   const url = request.url
-  const query = url.slice(32)
+  const query = url.slice(50)
   if (!/^\d+$/.test(query)) {
     return new NextResponse("L'id doit être un chiffre.")
   }
