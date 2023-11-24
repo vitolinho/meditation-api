@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<p align='center'>
+<img alt='picture' src='./public/1.png'>
+<p>
 
-## Getting Started
+<h1 align='center'>Meditation-API Documentation</h1>
 
-First, run the development server:
+<p align='left'>Welcome to the Secure Meditation API – your gateway to a serene and mindful digital experience. Our API provides a secure and seamless way to access a wealth of meditation content and categories, fostering tranquility and well-being.</p>
+
+## Servers
+https://meditation-api.vercel.app
+
+## API Endpoints
+
+| Endpoint                         | Method | URL                                                        | Curl Command                                              |
+|----------------------------------|--------|------------------------------------------------------------|------------------------------------------------------------|
+| /api/v1/meditationContent        | GET    | `https://meditation-api.vercel.app/api/v1/meditationContent` | `curl https://meditation-api.vercel.app/api/v1/meditationContent` |
+| /api/v1/meditationContent/id?{ID} | GET    | `https://meditation-api.vercel.app/api/v1/meditationContent/id?{ID}` | `curl https://meditation-api.vercel.app/api/v1/meditationContent/id?{ID}` |
+| /api/v1/meditationContent/videos | GET    | `https://meditation-api.vercel.app/api/v1/meditationContent/videos` | `curl https://meditation-api.vercel.app/api/v1/meditationContent/videos` |
+| /api/v1/meditationContent/articles | GET    | `https://meditation-api.vercel.app/api/v1/meditationContent/articles` | `curl https://meditation-api.vercel.app/api/v1/meditationContent/articles` |
+| /api/v1/meditationCategory        | GET    | `https://meditation-api.vercel.app/api/v1/meditationCategory` | `curl https://meditation-api.vercel.app/api/v1/meditationCategory` |
+| /api/v1/meditationCategory/id?{ID} | GET    | `https://meditation-api.vercel.app/api/v1/meditationCategory/id?{ID}` | `curl https://meditation-api.vercel.app/api/v1/meditationCategory/id?{ID}` |
+
+
+## Example Usage for Specific Content or Category
+
+If you wish to retrieve information about a specific meditation content or category, you can use the following examples for guidance.
+
+### Retrieve Meditation Content by ID
+
+To fetch details about a specific meditation content, replace `{ID}` with the actual ID of the content you are interested in. Here's an example using CURL:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+curl https://meditation-api.vercel.app/api/v1/meditationCategory/id?1
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+To retrieve the data, refer to the TypeScript example below. Ensure you have the 'he' library installed, as this API is safeguarded against security vulnerabilities, and the JSON responses are encoded for enhanced protection.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Installation
+```
+npm install he
+```
+### Code example
+```
+"use client"
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+import { useEffect, useState } from "react"
+import he from "he"
 
-## Learn More
+const Home = () => {
+  const [jsonData, setJsonData] = useState<any | undefined>()
 
-To learn more about Next.js, take a look at the following resources:
+  useEffect(()=> {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/v1/meditationCategory/id?1")
+        const data = await response.json()
+        const decodedData: any = JSON.parse(he.decode(JSON.stringify(data)))
+        console.log(decodedData)
+        setJsonData(decodedData)
+      } catch (error) {
+        console.error("Error fetching data:", error)
+      }
+    }
+    fetchData()
+  }, [])
+  return (
+    <div>
+      {jsonData && (
+        <div>
+          <p>{jsonData.id}</p>
+          <p>{jsonData.name}</p>
+          <p>{jsonData.description}</p>
+        </div>
+      )}
+    </div>
+  )
+}
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+export default Home
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Tech Stack
 
-## Deploy on Vercel
+- [Next.js](https://nextjs.org) Framework
+- [Typescript](https://www.typescriptlang.org) Language
+- [Prisma](https://www.prisma.io/) ORM
+- [Neon](https://neon.tech/) to manage postgres database
+- Good practice with [ESlint](https://eslint.org)
+- Deployed with [Vercel](https://vercel.com/)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Author
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- My self ([@vitolinho](https://github.com/vitolinho))
