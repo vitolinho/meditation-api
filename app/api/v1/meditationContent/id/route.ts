@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { PrismaClient } from "@prisma/client"
+import he from "he"
 
 export async function GET(request: any) {
   const url = request.url
@@ -11,10 +12,24 @@ export async function GET(request: any) {
   const prisma = new PrismaClient()
   const nbRows = await prisma.meditationContent.count()
   if (id > nbRows || id <= 0) return new NextResponse("L'id spécifié n'existe pas dans la base de données.")
-  const data = await prisma.meditationContent.findUnique({
+  const data: any = await prisma.meditationContent.findUnique({
     where: {
       id: id
     }
   })
-  return NextResponse.json(data)
+  const codedData = {
+    id: data?.id,
+    title: he.encode(data.title),
+    description: he.encode(data.description),
+    category: he.encode(data.category),
+    type: he.encode(data.type),
+    url: he.encode(data.url)
+  }
+  const cspHeader = "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self';"
+  return new NextResponse(JSON.stringify(codedData), {
+    headers: {
+      "Content-Type": "application/json",
+      "Content-Security-Policy": cspHeader
+    }
+  })
 }
