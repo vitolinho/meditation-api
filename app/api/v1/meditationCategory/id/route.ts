@@ -4,7 +4,7 @@ import he from "he"
 
 export async function GET(request: any) {
   const url = request.url
-  const query = url.slice(51)
+  const query = url.slice(63)
   if (!/^\d+$/.test(query)) {
     return new NextResponse("L'id doit être un chiffre.")
   }
